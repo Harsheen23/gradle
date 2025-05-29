@@ -1,0 +1,82 @@
+mkdir gradle
+cd gradle
+gradle init --type java-application
+ls
+gedit build.gradle 
+‐-------------------------------------
+#add the following command in the last
+
+task display {
+doLast{
+println "6A devops"
+}
+}
+
+------------------------
+gradle build
+gradle run
+-------------------
+Create github repository 
+Create jenkins pipeline
+--------------------
+gedit Jenkinsfile
+
+#Add the following code
+pipeline {
+    agent any  // Use any available agent
+
+    tools {
+        gradle 'Gradle'  // Ensure this matches the name configured in Jenkins
+        jdk 'JDK'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'your rep url'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'gradle build'  // Run Maven build
+            }
+        }
+
+       stage('Test') {
+           steps {
+               sh 'gradle test'  // Run unit tests
+           }
+        }
+
+              
+        stage('Run Application') {
+            steps {
+                // Start the JAR application
+                sh 'gradle run'
+            }
+        }
+
+        
+    }
+
+    post {
+        success {
+            echo 'Build and deployment successful!'
+        }
+        failure {
+            echo 'Build failed!'
+        }
+    }
+}
+--------------------------
+gradle build
+Push it on to the github using the following command:
+	git init
+	git add.
+	git commit -m "Initial commit"
+	git remote add origin your-rep-url
+	git remote set-url origin https://TOKEN@github.com/username/repname.git   (Take care of https )
+	git push -u origin master
+--------------------------
+Go to localhost:8080
+Build pipeline
